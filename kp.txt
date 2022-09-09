@@ -1,0 +1,5 @@
+SELECT * FROM `kp_ea_add_cart`
+SELECT * FROM `kp_ea_product_colors`
+SELECT * FROM `kp_ea_product_scales`
+SELECT * FROM `kp_ea_product_size`
+SELECT * FROM `kp_ea_product_varients`
