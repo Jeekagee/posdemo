@@ -417,8 +417,7 @@ class Orders extends CI_Controller {
         redirect('/Orders/insert');
     }
 
-    public function hold_order(){
-        $order_id =  $this->uri->segment('3');
+    public function hold_order($order_id){
         $this->Orders_model->hold_order($order_id); //124
         // Redirect to Add Order //95
         redirect('/Orders/insert');

@@ -185,13 +185,25 @@ class Orders_model extends CI_Model
         $this->db->update('orders', $data);
     }
 
+    // No of items of an Order
+    public function item_count($order_id)
+    {
+        $sql = "SELECT * FROM order_item WHERE order_id = $order_id";
+        $query = $this->db->query($sql);
+        $count = $query->num_rows();
+        return $count;
+    }
+
     public function hold_order($order_id){
         $data = array(
             'status' => 2
         );
-        
-        $this->db->where('id', $order_id);
-        $this->db->update('orders', $data);
+
+        // Hold an order if there are items
+        if ($this->item_count($order_id) > 0) {
+            $this->db->where('id', $order_id);
+            $this->db->update('orders', $data);
+        }
     }
 
     public function last_bill_no(){
