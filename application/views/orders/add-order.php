@@ -207,7 +207,7 @@
                     </div>
                   </div>
 
-                  <!-- Modal -->
+                  <!-- Discount Starts -->
                   <div id="discount" class="modal fade" role="dialog">
                     <div class="modal-dialog">
 
@@ -242,8 +242,7 @@
 
                     </div>
                   </div>
-
-                  <!-- Modal -->
+                  <!-- Discounts Ends -->
                   <div id="pay" class="modal fade" role="dialog">
                     <div class="modal-dialog">
 

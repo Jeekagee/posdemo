@@ -50,7 +50,7 @@
                       
                         <td class="text-center">
                             <a data-toggle="modal" data-target="#pay<?php echo $order->id; ?>" class="btn btn-primary btn-xs">Pay</a>
-                            <a href="<?php echo base_url(); ?>" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
+                            <a href="<?php echo base_url(); ?>Orders/pending/<?php echo $order->id; ?>" class="btn btn-warning btn-xs"><i class="fa fa-pencil"></i></a>
                             <a onclick="delete_hold(<?php echo $order->id; ?>)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                         </td>
                       </tr>

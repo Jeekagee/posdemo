@@ -62,6 +62,7 @@ class Orders_model extends CI_Model
         return $result;
     }
 
+
     public function order_item_available($item_id,$order_id,$v_id){
         $sql = "SELECT * FROM order_item WHERE order_id = $order_id AND item_id = '$item_id' AND variation_id = $v_id";
         $query = $this->db->query($sql);
@@ -1178,6 +1179,14 @@ class Orders_model extends CI_Model
         $query = $this->db->query($sql);
 
         $this->delete_order_items($order_id);
+    }
+
+    // Hold Order Items
+    public function hold_order_items($order_id){
+        $sql = "SELECT * FROM order_item WHERE order_id = $order_id ORDER BY id DESC";
+        $query = $this->db->query($sql);
+        $result = $query->result();
+        return $result;
     }
 
 }
