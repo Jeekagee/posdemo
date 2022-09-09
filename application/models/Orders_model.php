@@ -1164,5 +1164,21 @@ class Orders_model extends CI_Model
         return $count;
     }
 
+    // Delete order Items
+    public function delete_order_items($order_id)
+    {
+        $sql = "DELETE FROM order_item WHERE order_id = $order_id";
+        $query = $this->db->query($sql);
+    }
+
+    // Delete hold order 
+    public function delete_hold_order($order_id)
+    {
+        $sql = "DELETE FROM orders WHERE id = $order_id";
+        $query = $this->db->query($sql);
+
+        $this->delete_order_items($order_id);
+    }
+
 }
 /* End of file Oders_model.php and path /application/models/Oders_model.php */

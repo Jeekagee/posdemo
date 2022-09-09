@@ -1389,6 +1389,13 @@ class Orders extends CI_Controller {
         $this->load->view('orders/footer');
     }
 
+    public function delete_hold_order($order_id)
+    {
+        $this->Orders_model->delete_hold_order($order_id);
+        // Redirect to Hold Orders
+        redirect('/Orders/hold_orders');
+    }
+
 
 }
 

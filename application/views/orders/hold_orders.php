@@ -51,7 +51,7 @@
                         <td class="text-center">
                             <a data-toggle="modal" data-target="#pay<?php echo $order->id; ?>" class="btn btn-primary btn-xs">Pay</a>
                             <a href="<?php echo base_url(); ?>" class="btn btn-success btn-xs"><i class="fa fa-eye"></i></a>
-                            <a href="" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                            <a onclick="delete_hold(<?php echo $order->id; ?>)" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                         </td>
                       </tr>
                       
@@ -179,3 +179,13 @@
     <?php
   }
   ?>
+
+  <script>
+    function delete_hold(order_id){
+      var result = confirm("Want to delete?");
+      if (result) {
+        // To delete controller
+        window.location.href = "<?php echo base_url(); ?>Orders/delete_hold_order/"+order_id+"";
+      }
+    }
+  </script>
