@@ -405,6 +405,15 @@ class Orders extends CI_Controller
     redirect('/Orders/insert');
   }
 
+  public function delete_pending_order_item($id,$order_id)
+  {
+    $this->Orders_model->delete_order_item($id); //90
+    // Redirect to Add Order
+    $url = "/Orders/pending/".$order_id;
+    redirect($url);
+  }
+
+
   public function clear_items($order_id)
   {
     $this->Orders_model->clear_items($order_id);
@@ -1064,8 +1073,8 @@ class Orders extends CI_Controller
     redirect('/Orders/insert');
   }
 
-  public function item_search()
-  {
+  public function item_search($order_id = null)
+  { 
     $search_text = $this->input->post('search_txt');
     $item_ok = $this->Orders_model->search_items_available($search_text);
     $order_id = $this->Orders_model->last_order_id();
@@ -1115,7 +1124,7 @@ class Orders extends CI_Controller
                 success: function(data) {
                   //alert(data);
                   $("#add_items").html(data);
-                  location.reload();
+                  //location.reload();
                 }
               });
             });
@@ -1432,7 +1441,7 @@ class Orders extends CI_Controller
     $this->load->view('dashboard/layout/aside', $data);
     //$this->load->view('aside',$data);
     $this->load->view('orders/pending_order', $data);
-    $this->load->view('orders/footer');
+    $this->load->view('orders/footer_pending');
   }
 
   public function pending_order_items($order_id = null)
@@ -1468,7 +1477,7 @@ class Orders extends CI_Controller
                 <td class="text-center"><?php echo $itm_qty = $item->qty; ?></td>
                 <td class="text-right"><?php echo $item_total = $itm_amt * $itm_qty; ?>.00</td>
                 <td>
-                  <a href="<?php echo base_url(); ?>Orders/delete_order_item/<?php echo $item->id; ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
+                  <a href="<?php echo base_url(); ?>Orders/delete_pending_order_item/<?php echo $item->id; ?>/<?php echo $order_id; ?>" class="btn btn-danger btn-xs"><i class="fa fa-trash"></i></a>
                 </td>
               </tr>
             <?php
@@ -1546,6 +1555,210 @@ class Orders extends CI_Controller
     $this->Orders_model->clear_items($order_id);
     $this->pending_order_items($order_id);
   }
+
+  public function pending_item_search()
+  { 
+    $search_text = $this->input->post('search_txt');
+    $order_id = $this->input->post('order_id');
+
+    $item_ok = $this->Orders_model->search_items_available($search_text);
+    
+    if ($search_text == "") {
+      $items = $this->Orders_model->purchase_items();
+      foreach ($items as $itm) {
+        $int_qty_id = $itm->id; // id from int_qty tbl
+      ?>
+        <a id="single_item<?php echo $int_qty_id; ?>">
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="item_box">
+              <div class="item_m">
+                <?php
+                $item_id = $itm->item_id; // Item_ID
+                echo $this->Orders_model->barcode($item_id);
+                ?>
+              </div>
+              <div class="item_m">
+                <?php echo $item_id = $itm->item_id; ?>
+              </div>
+              <?php $var_id = $itm->variation_id; ?>
+              <div class="item_m fnt-bold" style="color:#313552;">
+                <?php echo $this->Orders_model->item_name($item_id); ?> - <?php echo $this->Orders_model->selling_price($item_id, $var_id); ?>
+              </div>
+              <div class="item_m">
+                Qty : <?php echo $itm->qty; ?>
+              </div>
+            </div>
+          </div>
+        </a>
+        <input hidden type="text" id="id<?php echo $int_qty_id; ?>" value="<?php echo $int_qty_id; ?>">
+        <input hidden type="text" id="order_id<?php echo $int_qty_id; ?>" value="<?php echo $order_id; ?>">
+
+        <script>
+          $(document).ready(function() {
+            $("#single_item<?php echo $int_qty_id; ?>").click(function() {
+              var order_id = $("#order_id<?php echo $int_qty_id; ?>").val();
+              var id = $("#id<?php echo $int_qty_id; ?>").val();
+              $.ajax({
+                url: "<?php echo base_url(); ?>Orders/insert_hold_order_item",
+                type: "POST",
+                cache: false,
+                data: {
+                  order_id: order_id,
+                  id: id
+                },
+                success: function(data) {
+                  //alert(data);
+                  $("#item_section").html(data);
+                  //location.reload();
+                }
+              });
+            });
+          });
+        </script>
+
+      <?php
+      }
+    } else {
+
+      $result = $this->Orders_model->search_items($search_text);
+      foreach ($result as $itm) {
+        $int_qty_id = $itm->id; // id from int_qty tbl
+      ?>
+        <a id="single_item<?php echo $int_qty_id; ?>">
+          <div class="col-lg-4 col-md-6 col-sm-12">
+            <div class="item_box">
+              <div class="item_m">
+                <?php
+                $item_id = $itm->item_id; // Item_ID
+                echo $this->Orders_model->barcode($item_id);
+                ?>
+              </div>
+              <div class="item_m">
+                <?php echo $item_id = $itm->item_id; ?>
+              </div>
+              <?php $var_id = $itm->variation_id; ?>
+              <div class="item_m fnt-bold" style="color:#313552;">
+                <?php echo $this->Orders_model->item_name($item_id); ?> - <?php echo $this->Orders_model->selling_price($item_id, $var_id); ?>
+              </div>
+              <div class="item_m">
+                Qty : <?php echo $itm->qty; ?>
+              </div>
+            </div>
+          </div>
+        </a>
+        <input hidden type="text" id="id<?php echo $int_qty_id; ?>" value="<?php echo $int_qty_id; ?>">
+        <input hidden type="text" id="order_id<?php echo $int_qty_id; ?>" value="<?php echo $order_id; ?>">
+
+        <script>
+          $(document).ready(function() {
+            $("#single_item<?php echo $int_qty_id; ?>").click(function() {
+              var order_id = $("#order_id<?php echo $int_qty_id; ?>").val();
+              var id = $("#id<?php echo $int_qty_id; ?>").val();
+              $.ajax({
+                url: "<?php echo base_url(); ?>Orders/insert_hold_order_item", //803
+                type: "POST",
+                cache: false,
+                data: {
+                  order_id: order_id,
+                  id: id
+                },
+                success: function(data) {
+                  //alert(data);
+                  $("#item_section").html(data);
+                  //location.reload();
+                }
+              });
+            });
+          });
+        </script>
+
+      <?php
+      }
+    }
+  }
+
+  public function update_pay_model()
+  {
+    $order_id = $this->input->post('order_id');
+    
+    $order_data = $this->Orders_model->order_tbl_data($order_id);
+    $sub_total = $order_data->total;
+    $discount = $order_data->discount;
+    ?>
+    <!-- Pay Starts -->
+    <div id="pay" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Payment</h4>
+                </div>
+                <form action="<?php echo base_url(); ?>Orders/add_bill" method="post">
+                    <div class="modal-body">
+                        <input type="text" value="<?php echo $order_id; ?>" name="p_order_id" hidden>
+                        <input type="text" value="<?php echo $sub_total; ?>" name="sub_total" hidden>
+                        <input type="text" value="<?php echo $discount; ?>" name="discount" hidden>
+
+                        <div class="row fnt-15 m-top-10">
+                            <div class="col-sm-5">
+                                <label>Total Amount:</label>
+                            </div>
+                            <div class="col-sm-7">
+                                <input class="form-control" type="text" name="total_amount" id="t_amount"
+                                    value="<?php echo $sub_total-$discount; ?>" disabled>
+                            </div>
+                        </div>
+
+                        <div class="row fnt-15 m-top-10">
+                            <div class="col-sm-5">
+                                <label>Payment:</label>
+                            </div>
+                            <div class="col-sm-7">
+                                <input class="form-control" type="number" name="p_amount" id="p_amount" value="">
+                            </div>
+                        </div>
+
+                        <div class="row fnt-15 m-top-10">
+                            <div class="col-sm-5">
+                                <label>Balance:</label>
+                            </div>
+                            <div class="col-sm-7">
+                                <div></div>
+                                <input class="form-control has-error" type="text" name="balance" id="balance" disabled>
+                            </div>
+                        </div>
+
+                        <div class="row fnt-15 m-top-10">
+
+                            <div class="col-sm-5">
+                                Payment Method
+                            </div>
+                            <div class="col-sm-7">
+                                <input value="1" type="radio" class="custom-control-input" name="p_method" checked>
+                                <label class="custom-control-label">Cash</label>
+
+                                <input value="2" type="radio" class="custom-control-input" id="defaultChecked"
+                                    name="p_method">
+                                <label class="custom-control-label">Card</label>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <input type="submit" class="btn btn-primary" value="Pay" id="btn_pay" disabled>
+                        <button type="button" class="btn btn-danger" data-dismiss="modal">Close</button>
+                </form>
+            </div>
+        </div>
+
+    </div>
+    </div>
+    <!-- Pay Ends -->
+    <?php
+  }
+
 }
 
 /* End of file Orders.php and path /application/controllers/Orders.php */

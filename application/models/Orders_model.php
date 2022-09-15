@@ -269,6 +269,12 @@ class Orders_model extends CI_Model
         return $row = $query->first_row();
     }
 
+    public function order_tbl_data($order_id){
+        $sql = "SELECT * FROM orders WHERE id = $order_id LIMIT 1";
+        $query = $this->db->query($sql);
+        return $row = $query->first_row();
+    }
+
 
     public function reminder_available($vehicle_no,$contact_no){
         $sql = "SELECT id FROM reminder WHERE vehicle_no = '$vehicle_no' AND contact_no = $contact_no";
