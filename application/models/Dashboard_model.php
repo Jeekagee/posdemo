@@ -80,15 +80,18 @@ class Dashboard_model extends CI_Model
 
         $newDate = date("d-m-Y", strtotime($from_date));
         if ($from_date==null && $to_date==null) {
-            $sql = "SELECT amount,created FROM order_item WHERE MONTH(created) = MONTH(CURRENT_DATE())";
+            $sql = "SELECT * FROM orders 
+            WHERE created >= CURRENT_DATE()";
         }
 
         elseif($from_date!=null && $to_date==null) {
-            $sql = "SELECT amount,created FROM order_item WHERE created = '$newDate'";
+            $sql = "SELECT * FROM orders 
+            WHERE created = '$newDate'";
         }
 
         elseif($from_date!=null && $to_date!=null){
-            $sql = "SELECT amount,created FROM order_item WHERE created BETWEEN  '$from_date' AND '$to_date'";
+            $sql = "SELECT * FROM orders 
+            WHERE DATE(created) BETWEEN  '$from_date' AND '$to_date'";
         }
 
         // $sql = "SELECT amount FROM order_item WHERE status = 1";
@@ -100,12 +103,53 @@ class Dashboard_model extends CI_Model
 
         if ($count > 0) {
             foreach ($result as $amt) {
-                $total = $total+$amt->amount;
+                // $tot=$amt->amount*$amt->qty;
+                $total = $total+$amt->total-$amt->discount;
             }
         }
 
         return $total;
     }
+    // public function total_item_income($from_date,$to_date){
+    //     $from_date=null;
+    //     $to_date=null;
+    //         if ($this->input->post('submit')) {
+    //             $from_date=$this->input->post('from_date');
+    //             $to_date=$this->input->post('to_date');
+    //   }
+
+    //     $newDate = date("d-m-Y", strtotime($from_date));
+    //     if ($from_date==null && $to_date==null) {
+    //         $sql = "SELECT order_item.amount,order_item.created,orders.discount,order_item.qty FROM order_item,orders 
+    //         WHERE order_item.order_id=orders.id AND order_item.created >= CURRENT_DATE()";
+    //     }
+
+    //     elseif($from_date!=null && $to_date==null) {
+    //         $sql = "SELECT order_item.amount,order_item.created,orders.discount,order_item.qty FROM order_item,orders 
+    //         WHERE order_item.order_id=orders.id AND order_item.created = '$newDate'";
+    //     }
+
+    //     elseif($from_date!=null && $to_date!=null){
+    //         $sql = "SELECT order_item.amount,order_item.created,orders.discount,order_item.qty FROM order_item,orders 
+    //         WHERE order_item.order_id=orders.id AND order_item.created BETWEEN  '$from_date' AND '$to_date'";
+    //     }
+
+    //     // $sql = "SELECT amount FROM order_item WHERE status = 1";
+    //     $query = $this->db->query($sql);
+    //     $result = $query->result();
+    //     $count = $query->num_rows();
+
+    //     $total = 0;
+
+    //     if ($count > 0) {
+    //         foreach ($result as $amt) {
+    //             $tot=$amt->amount*$amt->qty;
+    //             $total = $total+$tot-$amt->discount;
+    //         }
+    //     }
+
+    //     return $total;
+    // }
     public function total_expense($from_date,$to_date){
         $from_date=null;
         $to_date=null;
@@ -125,7 +169,7 @@ class Dashboard_model extends CI_Model
         }
 
         elseif($from_date!=null && $to_date!=null){
-            $sql = "SELECT amount,created FROM expense WHERE created BETWEEN '$from_date' AND '$to_date'";
+            $sql = "SELECT amount,created FROM expense WHERE DATE(created) BETWEEN '$from_date' AND '$to_date'";
         }
 
         // $sql = "SELECT amount FROM expense";
@@ -154,7 +198,7 @@ class Dashboard_model extends CI_Model
       
         $newDate = date("d-m-Y", strtotime($from_date));
         if ($from_date==null && $to_date==null) {
-            $sql = "SELECT * FROM purchase_items WHERE MONTH(created_at) = MONTH(CURRENT_DATE())";
+            $sql = "SELECT * FROM purchase_items WHERE created_at >= CURRENT_DATE()";
         }
 
         elseif($from_date!=null && $to_date==null) {
@@ -162,7 +206,7 @@ class Dashboard_model extends CI_Model
         }
 
         elseif($from_date!=null && $to_date!=null){
-            $sql = "SELECT * FROM purchase_items WHERE created_at >=  '$from_date' AND '$to_date'";
+            $sql = "SELECT * FROM purchase_items WHERE DATE(created_at) BETWEEN '$from_date' AND '$to_date'";
         }
 
         // $sql = "SELECT * FROM purchase_items";
@@ -211,7 +255,7 @@ class Dashboard_model extends CI_Model
         }
 
         elseif($from_date!=null && $to_date!=null){
-            $sql = "SELECT * FROM orders WHERE created BETWEEN  '$from_date' AND '$to_date'";
+            $sql = "SELECT * FROM orders WHERE DATE(created) BETWEEN '$from_date' AND '$to_date'";
         }
 
         // $sql = "SELECT * FROM orders WHERE MONTH(created) = MONTH(CURRENT_DATE())";
@@ -241,7 +285,7 @@ class Dashboard_model extends CI_Model
         }
 
         elseif($from_date!=null && $to_date!=null){
-            $sql = "SELECT DISTINCT customer_name FROM orders WHERE created BETWEEN  '$from_date' AND '$to_date'";
+            $sql = "SELECT DISTINCT customer_name FROM orders WHERE DATE(created) BETWEEN  '$from_date' AND '$to_date'";
         }
 
         // $sql = "SELECT * FROM orders WHERE MONTH(created) = MONTH(CURRENT_DATE())";

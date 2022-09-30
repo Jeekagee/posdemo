@@ -51,31 +51,31 @@
               </ul>
               <div class="bar" style="margin-right: 2%;">
                 <div class="title">JAN</div>
-                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">50%</div>
+                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">0%</div>
               </div>
               <div class="bar" style="margin: 0px 2%;">
                 <div class="title">FEB</div>
-                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">40%</div>
+                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">0%</div>
               </div>
               <div class="bar" style="margin: 0px 2%;">
                 <div class="title">MAR</div>
-                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">70%</div>
+                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">0%</div>
               </div>
               <div class="bar" style="margin: 0px 2%;">
                 <div class="title">APR</div>
-                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">55%</div>
+                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">0%</div>
               </div>
               <div class="bar" style="margin: 0px 2%;">
                 <div class="title">MAY</div>
-                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">30%</div>
+                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">0%</div>
               </div>
               <div class="bar" style="margin: 0px 2%;">
                 <div class="title">JUN</div>
-                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">80%</div>
+                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">0%</div>
               </div>
               <div class="bar" style="margin: 0px 2%;">
                 <div class="title">JUL</div>
-                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">20%</div>
+                <div class="value tooltips" data-original-title="0" data-toggle="tooltip" data-placement="top">0%</div>
               </div>
               <div class="bar" style="margin: 0px 2%;">
                 <div class="title">AUG</div>

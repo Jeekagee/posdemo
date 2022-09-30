@@ -61,6 +61,113 @@
                 value="<?php echo $toDate; ?>">
         </div>
       </div>
+
+      <style>
+        .small-box {
+              border-radius: 5px;
+              box-shadow: 0 0 1px rgba(0,0,0,.125),0 1px 3px rgba(0,0,0,.2);
+              display: block;
+              margin-bottom: 20px;
+              position: relative;
+          }
+
+          .small-box > .inner {
+              padding: 10px;
+          }
+
+          .col-lg-3 .small-box h3, .col-md-3 .small-box h3, .col-xl-3 .small-box h3 {
+              font-size: 25px;
+          }
+
+          .small-box h3 {
+              font-size: 25px;
+              font-weight: 700;
+              margin-top: 10px;
+              padding: 0;
+              white-space: nowrap;
+          }
+
+
+          .small-box p {
+              font-size: 18px;
+          }
+          p {
+              margin-top: 0;
+              margin-bottom: 10px;
+          }
+          *, ::after, ::before {
+              box-sizing: border-box;
+          }
+          .small-box > .small-box-footer {
+              background-color: rgba(0,0,0,.1);
+              color: rgba(255,255,255,.8);
+              display: block;
+              padding: 3px 0;
+              position: relative;
+              text-align: center;
+              text-decoration: none;
+              z-index: 10;
+          }
+          .small-box .icon {
+              color: rgba(0,0,0,.15);
+              z-index: 0;
+          }
+
+          .bg-info, .bg-info > a {
+              color: #5d5a95 !important;
+          }
+          .bg-info {
+              background-color: white !important;
+              border: 1px solid #4aa2bd;
+              margin-top: 20px;
+              
+          }.fa-2x {
+            font-size: 2em;
+            padding-right: 10px;
+          }
+
+          .bg-success, .bg-success > a {
+              color: #fff !important;
+          }
+          .bg-success {
+              background-color: #28a745 !important;
+          }
+    </style>
+
+        <div class="row">
+            <div class="col-lg-6 col-12">
+              <!-- small box -->
+              <div class="small-box bg-info" style="margin-left: 30%;">
+                <div class="inner">
+                  <h3 style="font-size:25px;"><i class="fa fa-shopping-cart fa-1.5x" aria-hidden="true"></i>
+                  <p id="tot_purchase" style="padding-top:10px;"></p></h3>
+
+                  <p style="font-size:18px; margin-bottom: 0px;">Total Purchase</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-bag"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+            <div class="col-lg-6 col-12">
+              <!-- small box -->
+              <div class="small-box bg-info" style="margin-right: 30%;">
+                <div class="inner">
+                  <h3 style="font-size:25px;"><i class="fa fa-dollar fa-1x"></i>
+                  <p id="no_of_purchase" style="padding-top:10px;"></p></h3>
+
+                  <p style="font-size:18px; margin-bottom: 0px;">No of Purchase</p>
+                </div>
+                <div class="icon">
+                  <i class="ion ion-bag"></i>
+                </div>
+                <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
+              </div>
+            </div>
+        <!-- /.row -->
+        </div>
+
         <div class="row mb" style="padding:10px;">
           <!-- page start-->
           <div class="content-panel" >
@@ -89,6 +196,8 @@
      var year = dateObj.getUTCFullYear();
      selDate = year + "-" + month + "-" + day;
      fetchdata(selDate, selDate, sup_id);
+     get_total_purchase(selDate, selDate, sup_id);
+     get_purchase_count(selDate, selDate, sup_id);
     });
 
     $("#sup_id").change(function(){
@@ -96,6 +205,8 @@
        var fromDate = $("#fromDate").val();
        var toDate = $("#toDate").val();
        fetchdata(fromDate, toDate, sup_id);
+       get_total_purchase(fromDate, toDate, sup_id);
+       get_purchase_count(fromDate, toDate, sup_id);
     });
 
     $(document).on('change','#fromDate',function(){
@@ -103,6 +214,8 @@
        var toDate = $("#toDate").val();
        var sup_id = $("#sup_id").val();
        fetchdata(fromDate, toDate, sup_id);
+       get_total_purchase(fromDate, toDate, sup_id);
+       get_purchase_count(fromDate, toDate, sup_id);
     });
 
     $(document).on('change','#toDate',function(){
@@ -110,6 +223,8 @@
        var fromDate = $("#fromDate").val();
        var sup_id = $("#sup_id").val();
        fetchdata(fromDate, toDate, sup_id);
+       get_total_purchase(fromDate, toDate, sup_id);
+       get_purchase_count(fromDate, toDate, sup_id);
     });
 
     function fetchdata(fromDate, toDate, sup_id)
@@ -142,4 +257,29 @@
           }
         });
       }
+
+    function get_total_purchase(fromDate, toDate)
+    {
+      $.ajax({
+        url:"<?php echo base_url(); ?>Report/LoadTotalPurchase",
+        type:"POST",
+        data:{fromDate:fromDate, toDate:toDate},
+        success:function(data){
+          //alert(data);
+          $("#tot_purchase").html(data);
+        }
+      });
+    }
+    function get_purchase_count(fromDate, toDate)
+    {
+      $.ajax({
+        url:"<?php echo base_url(); ?>Report/LoadpurchaseCount",
+        type:"POST",
+        data:{fromDate:fromDate, toDate:toDate},
+        success:function(data){
+          //alert(data);
+          $("#no_of_purchase").html(data);
+        }
+      });
+    }
   </script>

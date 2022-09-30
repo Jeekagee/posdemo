@@ -160,6 +160,8 @@
      var year = dateObj.getUTCFullYear();
      selDate = year + "-" + month + "-" + day;
      fetchdata(selDate, selDate);
+     get_total_sales(selDate, selDate);
+     get_order_count(selDate, selDate);
     });
 
     // $("#sup_id").change(function(){

@@ -365,6 +365,34 @@ class Report_model extends CI_Model
         return $result;
     }
 
+    public function tot_purchase($fromDate,$toDate){
+        $sql = "SELECT * FROM purchase_items 
+            WHERE DATE(created_at) BETWEEN '$fromDate' AND '$toDate'";
+        $query = $this->db->query($sql);
+        $result = $query->result();
+        $count = $query->num_rows();
+
+        $total = 0;
+
+        if ($count > 0) {
+            foreach ($result as $amt) {
+                $price = $amt->purchase_price*$amt->quantity;
+                $total = $total+$price;
+            }
+        }
+
+        return $total;
+    }
+
+    public function no_of_purchase($fromDate,$toDate){
+        $sql = "SELECT * FROM purchase WHERE DATE(created_at) BETWEEN '$fromDate' AND '$toDate'";
+        $query = $this->db->query($sql);
+        $result = $query->result();
+        $count = $query->num_rows();
+        
+        return $count;
+    }
+
     public function sales_summary($fromDate,$toDate){
         $sql = "SELECT * FROM bill_item WHERE DATE(created) BETWEEN '$fromDate' AND '$toDate' 
         ORDER BY created DESC";

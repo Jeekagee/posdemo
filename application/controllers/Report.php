@@ -331,6 +331,28 @@ class Report extends CI_Controller
     <?php
   }
   
+  public function LoadTotalPurchase(){
+    $fromDate = $this->input->post('fromDate');
+    $toDate = $this->input->post('toDate');
+
+    $tot_purchase = $this->Report_model->tot_purchase($fromDate,$toDate);
+
+    ?>
+    <p><?php echo $tot_purchase; ?>.00</p>
+    <?php
+  }
+
+  public function LoadpurchaseCount(){
+    $fromDate = $this->input->post('fromDate');
+    $toDate = $this->input->post('toDate');
+
+    $no_of_purchase = $this->Report_model->no_of_purchase($fromDate,$toDate);
+
+    ?>
+    <p><?php echo $no_of_purchase; ?></p>
+    <?php
+  }
+
   public function InventoryItems()
   {
     $item_id = $this->input->post('id');

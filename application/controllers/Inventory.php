@@ -320,7 +320,7 @@ class Inventory extends CI_Controller {
     public function item_price()
     {
         $id = $this->input->post('item_id');
-        $row = $this->Inventory_model->purchase_data($id);
+        $row = $this->Inventory_model->purchase_price($id);
         echo $row->selling_price;
     }
 

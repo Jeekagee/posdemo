@@ -237,6 +237,14 @@ class Inventory_model extends CI_Model
         $row = $query->first_row();
         return $row;
     }
+
+    public function purchase_price($id)
+    {
+        $sql = "SELECT * FROM purchase_items WHERE item_id=$id ORDER BY selling_price DESC";
+        $query = $this->db->query($sql);
+        $row = $query->first_row();
+        return $row;
+    }
 }
 
 
