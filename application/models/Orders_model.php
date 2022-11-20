@@ -185,7 +185,7 @@ class Orders_model extends CI_Model
         $this->db->where('id', $order_id);
         $this->db->update('orders', $data);
     }
-
+    
     // No of items of an Order
     public function item_count($order_id)
     {
@@ -256,6 +256,23 @@ class Orders_model extends CI_Model
             return false;
         }
     }
+    
+    public function insert_multipay($order_id,$bill_no,$p_cash,$p_card,$sub_total){
+        if ($this->is_same_order_id($order_id) == 0) {
+            $data = array(
+                'order_id' => $order_id,
+                'bill_no' => $bill_no,
+                'cash' => $p_cash,
+                'card' => $p_card,
+                'total' => $sub_total
+            );
+            $this->db->insert('multi_pay', $data);
+            return true;
+        }
+        else{
+            return false;
+        }
+    }
 
     public function bill_data($bill_no){
         $sql = "SELECT * FROM bill_item WHERE bill_no = $bill_no LIMIT 1";
@@ -274,7 +291,6 @@ class Orders_model extends CI_Model
         $query = $this->db->query($sql);
         return $row = $query->first_row();
     }
-
 
     public function reminder_available($vehicle_no,$contact_no){
         $sql = "SELECT id FROM reminder WHERE vehicle_no = '$vehicle_no' AND contact_no = $contact_no";
@@ -360,7 +376,7 @@ class Orders_model extends CI_Model
 
         return $row;
     }
-
+    
     public function full_service($order_id){
         $sql = "SELECT * FROM full_service WHERE order_id = $order_id";
         $query = $this->db->query($sql);
@@ -378,54 +394,27 @@ class Orders_model extends CI_Model
     }
 
     public function edit_order($bill_no){
-        $sql = "SELECT * FROM orders o LEFT JOIN bill_item b ON o.id=b.order_id WHERE b.bill_no = $bill_no";
+        $sql = "SELECT * FROM orders WHERE bill_no = $bill_no";
         $query = $this->db->query($sql);
         $row = $query->first_row();
 
         return $row;
     }
 
-    public function current_qty($purchase_id)
-    {
-        $sql = "SELECT * FROM int_qty WHERE purchase_id = $purchase_id";
-        $query = $this->db->query($sql);
-        $row = $query->first_row();
-
-        return $row->qty;
-    }
-
-     // Add qunatity when user remove the order item
-     public function addQty($qty,$purchase_id)
-     {
-        $sql = "UPDATE int_qty SET qty = qty + $qty WHERE purchase_id = $purchase_id";
-        $this->db->query($sql);
-     }
-
-    public function update_order($bill_no,$vehicle_no,$contact_no,$discount){
+    public function update_order($cus_name,$bill_no,$vehicle_no,$contact_no,$bill_date,$type,$make,$discount){
         $data = array(
-            // 'customer_name' => $cus_name,
-            'customer_mobile' => $contact_no,
+            'customer_name' => $cus_name,
+            'vehicle_no' => $vehicle_no,
+            'contact_no' => $contact_no,
+            'bill_date' => $bill_date,
+            'type' => $type,
+            'make' => $make,
             'discount' => $discount
             
         );
         
         $this->db->where('bill_no', $bill_no);
         $this->db->update('orders', $data);
-    }
-
-    public function get_contact_no($order_id){
-        $sql = "SELECT * FROM customer WHERE order_id = '$order_id'";
-        $query = $this->db->query($sql);
-        $row = $query->first_row();
-
-        return $row->mobile;
-    }
-    public function get_customername($order_id){
-        $sql = "SELECT * FROM customer WHERE order_id = '$order_id'";
-        $query = $this->db->query($sql);
-        $row = $query->first_row();
-
-        return $row->fname;
     }
 
     /*public function update_customer($vehicle_no,$contact_no){
@@ -1186,7 +1175,7 @@ class Orders_model extends CI_Model
 
         $this->delete_order_items($order_id);
     }
-
+    
     // Hold Order Items
     public function hold_order_items($order_id){
         $sql = "SELECT * FROM order_item WHERE order_id = $order_id ORDER BY id DESC";

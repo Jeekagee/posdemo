@@ -135,14 +135,12 @@
     </style>
 
         <div class="row">
-            <div class="col-lg-6 col-12">
+            <div class="col-lg-5 col-12">
               <!-- small box -->
               <div class="small-box bg-info" style="margin-left: 30%;">
                 <div class="inner">
-                  <h3 style="font-size:25px;"><i class="fa fa-shopping-cart fa-1.5x" aria-hidden="true"></i>
+                  <h3 style="font-size:18px;"><i class="fa fa-shopping-cart fa-1.5x" aria-hidden="true">&nbsp;</i>Total Purchase
                   <p id="tot_purchase" style="padding-top:10px;"></p></h3>
-
-                  <p style="font-size:18px; margin-bottom: 0px;">Total Purchase</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>
@@ -150,14 +148,12 @@
                 <a href="#" class="small-box-footer">More info <i class="fas fa-arrow-circle-right"></i></a>
               </div>
             </div>
-            <div class="col-lg-6 col-12">
+            <div class="col-lg-5 col-12">
               <!-- small box -->
               <div class="small-box bg-info" style="margin-right: 30%;">
                 <div class="inner">
-                  <h3 style="font-size:25px;"><i class="fa fa-dollar fa-1x"></i>
+                  <h3 style="font-size:18px;"><i class="fa fa-dollar fa-1x">&nbsp;</i>No of Purchase
                   <p id="no_of_purchase" style="padding-top:10px;"></p></h3>
-
-                  <p style="font-size:18px; margin-bottom: 0px;">No of Purchase</p>
                 </div>
                 <div class="icon">
                   <i class="ion ion-bag"></i>
