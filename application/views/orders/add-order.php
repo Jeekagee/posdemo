@@ -1,5 +1,19 @@
 
 <style type="text/css">
+  .li-style{
+    border-bottom: medium;
+    background-color:#f4f9f9;
+    padding: 8px;
+    color: #314e52;
+  }
+  .li-style:hover{
+    background-color:#e7e6e1;
+    color: #f2a154;
+  }
+  .sec-container{
+    background-color:white;
+    padding:50px;
+  }
   .add_items{
     width:100%;
     height:380px;
@@ -323,6 +337,7 @@
 
                     <div class="col-md-4">
                       <input type="text" class="form-control" placeholder="Search" id="search_item">
+                      <div id="item_list"></div>
                     </div>
 
                     <div class="col-md-1">

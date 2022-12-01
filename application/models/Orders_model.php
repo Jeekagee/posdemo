@@ -916,8 +916,16 @@ class Orders_model extends CI_Model
         return $result;
     }
 
+    public function item_names($keyword)
+    {
+        $sql = "SELECT * FROM int_items WHERE item_name LIKE '%$keyword%' LIMIT 6";
+        $query = $this->db->query($sql);
+        $result = $query->result();
+        return $result;
+    }
+
     public function search_item_id($search_text){
-        $sql = "SELECT * FROM int_qty WHERE item_id LIKE '%$search_text%'";
+        $sql = "SELECT * FROM int_qty WHERE item_id LIKE '$search_text'";
         $query = $this->db->query($sql);
         $result = $query->result();
         return $result;

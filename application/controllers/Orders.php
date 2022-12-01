@@ -1090,6 +1090,22 @@ class Orders extends CI_Controller {
         redirect('/Orders/insert');
     }
 
+    public function item_suggestion()
+    {
+        $output = "";
+        $item = $this->input->post('item');
+        $result = $this->Orders_model->item_names($item);
+        $output = '<ul class="list-unstyled">';	
+        foreach ($result as $row)
+        {
+                $item_name = $row->item_name;
+                $item_id = $row->item_id;
+                $output .= '<li data-id='.$item_id.' class="li-style">'.$item_name.'</li>';
+        }
+        $output .= '</ul>';
+        echo $output;
+    }
+
     public function item_search(){
             $search_text = $this->input->post('search_txt');
             $item_ok = $this->Orders_model->search_items_available($search_text);
@@ -1205,6 +1221,7 @@ class Orders extends CI_Controller {
 
     public function item_id_search(){
       $search_text = $this->input->post('search_txt');
+      
       $item_ok = $this->Orders_model->search_items_available($search_text);
       $order_id = $this->Orders_model->last_order_id();
       if ($search_text == "") {

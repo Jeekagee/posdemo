@@ -55,15 +55,30 @@
       $("#search_item").on("keyup", function(){
         var search_text = $(this).val();
         if (isNaN(search_text)) { // Search text
+          // $.ajax({
+          //   url:"<?php echo base_url(); ?>Orders/item_search", //756
+          //   type:"POST",
+          //   cache:false,
+          //   data:{search_txt:search_text},
+          //   success:function(data){
+          //     //alert(data);
+          //     $("#items").html(data);
+          //     $("#items").fadeIn();
+          //   }
+          // });
+
           $.ajax({
-            url:"<?php echo base_url(); ?>Orders/item_search", //756
-            type:"POST",
-            cache:false,
-            data:{search_txt:search_text},
-            success:function(data){
+            type: "POST",
+            url: "<?php echo base_url(); ?>Orders/item_suggestion",
+            data: 'keyword=' + $(this).val(),
+            beforeSend: function() {
+              $("#search_item").css("background", "#FFF url(LoaderIcon.gif) no-repeat 165px");
+            },
+            success: function(data) {
               //alert(data);
-              $("#items").html(data);
-              $("#items").fadeIn();
+              $("#suggesstion-box").show();
+              $("#suggesstion-box").html(data);
+              $("#search_item").css("background", "#FFF");
             }
           });
         }
@@ -85,6 +100,14 @@
         
       });
 
+      
+
+      //To select a country name
+      function select_item(val) {
+        $("#search_item").val(val);
+        $("#suggesstion-box").hide();
+      }
+
 
       $("#p_amount").on("keyup", function(){
         var p_amount = $(this).val();
@@ -103,6 +126,53 @@
         }
       });
 
+
+  });
+</script>
+
+<script type="text/javascript">
+  $(document).ready(function(){
+      $("#search_item").on("keyup", function(){
+        var item = $(this).val();
+        if (item !== "") {
+          $.ajax({
+            url:"<?php echo base_url(); ?>Orders/item_suggestion",
+            type:"POST",
+            cache:false,
+            data:{item:item},
+            success:function(data){
+              //alert(data);
+              $("#item_list").html(data);
+              $("#item_list").fadeIn();
+            }
+          });
+        }else{
+          $("#item_list").html("");
+          $("#item_list").fadeOut();
+        }
+      });
+
+      // click one particular city name it's fill in textbox
+      $(document).on("click","#item_list li", function(){
+
+        $('#search_item').val($(this).text());
+        var search_text = $(this).attr("data-id");
+        //alert(search_text);
+        $.ajax({
+            url:"<?php echo base_url(); ?>Orders/item_id_search", //756
+            type:"POST",
+            cache:false,
+            data:{search_txt:search_text},
+            success:function(data){
+            //alert(data);
+            $("#items").html(data);
+            $("#items").fadeIn();
+            }
+        });
+
+        $('#item_list').fadeOut("fast");
+        
+      });
 
   });
 </script>
